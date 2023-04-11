@@ -1,0 +1,11 @@
+{
+  "codeowners": ["@M4LiNuX"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/M4LiNuX/gruenbeck_softliq",
+  "domain": "gruenbeck_softliq",
+  "iot_class": "local_polling",
+  "name": "Gruenbeck softliQ",
+  "requirements": [],
+  "version": "0.0.0"
+}

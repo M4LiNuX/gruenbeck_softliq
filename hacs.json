@@ -1,0 +1,5 @@
+{
+  "name": "Gruenbeck softliQ",
+  "render_readme": true,
+  "iot_class": "local_polling"
+}

@@ -1,1 +1,3 @@
-# homeassistant_gruenbeck
+# Gruenbeck softliQ for Home Assistant
+
+## Installation
