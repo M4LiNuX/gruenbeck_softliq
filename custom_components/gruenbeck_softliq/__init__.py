@@ -5,7 +5,7 @@ from homeassistant.components.sensor import (
     SensorEntity, 
     SensorStateClass
 )
-from homeassistant.cure import HomeAssistant
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DisoveryInfoType
 
