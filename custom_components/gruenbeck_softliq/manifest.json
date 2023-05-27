@@ -6,6 +6,6 @@
   "domain": "gruenbeck_softliq",
   "iot_class": "local_polling",
   "name": "Gruenbeck softliQ",
-  "requirements": [],
+  "requirements": ["aiohttp==3.8.4"],
   "version": "0.0.0"
 }
