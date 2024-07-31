@@ -13,7 +13,8 @@ async def request_gruenbeck(id:int)-> None:
     payload=f"id={id}&show=D_D_1|D_D_2|D_A_1_1|D_A_1_2|D_A_2_2|D_A_3_1|D_A_3_2|D_Y_1|D_A_1_3|D_A_2_3|D_Y_5|D_A_2_1~"
     # payload=f"id={id}&show=D_K_19&code={code:03d}~"
     # payload=f"id={id}&show=D_Y_10_1|D_Y_10_2~"
-    payload=f"id={id}&show=D_A_1_2|D_A_1_5~"
+    # payload=f"id={id}&show=D_A_1_2|D_A_1_5~"    # restkapazität tank 1 und 2
+    payload=f"id={id}&show=D_A_1_7|D_A_1_1|D_A_1_4|&code={code:03d}~"# aktueller Durchfluss
     print(f"\nBegin downloading {url}: {payload}")
     async with aiohttp.ClientSession() as session:
         try:
