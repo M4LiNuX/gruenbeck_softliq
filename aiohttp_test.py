@@ -1,44 +1,39 @@
 #!/usr/bin/env python3
 
 import asyncio
-import time
-
+import logging
 import aiohttp
 
+logging.basicConfig(level=logging.INFO)
 
-async def request_gruenbeck(id:int)-> None:
-    # for code in range(108, 999):
-    code = 142 # gültig für z.B. D_H_2
-    url = f"http://192.168.1.36/mux_http/"
-    payload=f"id={id}&show=D_D_1|D_D_2|D_A_1_1|D_A_1_2|D_A_2_2|D_A_3_1|D_A_3_2|D_Y_1|D_A_1_3|D_A_2_3|D_Y_5|D_A_2_1~"
-    # payload=f"id={id}&show=D_K_19&code={code:03d}~"
-    # payload=f"id={id}&show=D_Y_10_1|D_Y_10_2~"
-    # payload=f"id={id}&show=D_A_1_2|D_A_1_5~"    # restkapazität tank 1 und 2
-    payload=f"id={id}&show=D_A_1_7|D_A_1_1|D_A_1_4|&code={code:03d}~"# aktueller Durchfluss
-    print(f"\nBegin downloading {url}: {payload}")
-    async with aiohttp.ClientSession() as session:
+async def request_gruenbeck(id: int, url: str, code: int, params: str):
+    payload = f"id={id}&show={params}&code={code:03d}~"
+    logging.info(f"Sending request to {url} with payload: {payload}")
+    
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=10)) as session:
         try:
-            async with session.post(url, data=payload) as response: 
-                print(f"Status: {response.status}")
+            async with session.post(url, data=payload) as response:
+                logging.info(f"Response status: {response.status}")
                 if response.status == 200:
-                    print("Content-type:", response.headers['content-type'])
                     result = await response.text()
-                    print(result)
+                    logging.info(f"Response content: {result}")
                     if result != "<data><code>wrong</code></data>":
-                        print(30*"-")
-        except aiohttp.ServerDisconnectedError as e:
-            print('Connection Error', str(e))
+                        logging.info("Valid response received.")
+                else:
+                    logging.error(f"Error: Received HTTP {response.status}")
+        except aiohttp.ClientError as e:
+            logging.error(f"Connection error: {str(e)}")
 
 
 async def main():
-    await asyncio.gather(request_gruenbeck(671), request_gruenbeck(672))
+    url = "http://192.168.1.36/mux_http/"
+    ids = [671, 672, 673]
+    code = 142
+    params = "D_A_1_7|D_A_1_1|D_A_1_4"
+
+    tasks = [request_gruenbeck(id, url, code, params) for id in ids]
+    await asyncio.gather(*tasks)
 
 
 if __name__ == "__main__":
-    s = time.perf_counter()
-
-    asyncio.run(request_gruenbeck(673))
-    # asyncio.run(main())
-
-    elapsed = time.perf_counter() - s
-    print(f"Execution time: {elapsed:0.2f} seconds.")
+    asyncio.run(main())
